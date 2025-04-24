@@ -1,19 +1,14 @@
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Home from "./components/Home";
-const appRouter = createBrowserRouter([
-  {
-    path:"/",
-    element:<Home/>
-  }
-])
+import CreateSnippet from './components/CreateSnippet'
+import Navbar from './components/Navbar'
+
 function App() {
+ 
   return (
-    <div className="container max-w-6xl mx-auto">
-
-      <RouterProvider router={appRouter}/>
-
-    </div>
-  ) 
+    <main className='container max-w-4xl mx-auto p-4'>
+      <Navbar/>
+      <CreateSnippet/>
+    </main>
+  )
 }
 
-export default App;
+export default App
