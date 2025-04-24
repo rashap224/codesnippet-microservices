@@ -1,38 +1,48 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const CreateComment = ({ snippet }) => {
   const [text, setText] = useState("");
-  const [comments, setComments] = useState([]);
+ 
+  const handleComment = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
 
-  const addComment = async (e) => {
-    e.preventDefault();
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/v1/snippet/${snippet.id}/comment`,
+        `http://localhost:8002/api/v1/snippets/${snippet.id}/comments`,
         { text }
-      ); 
-      setComments([...comments, res.data.comment]);
-      setText("");
+      );
+      // console.log("Comment posted successfully:", res.data);
+      setText(""); // Clear the input field after successful submission
     } catch (error) {
-      console.log(error);
+      console.error("Error posting comment:", error);
     }
   };
- 
+
+
   return (
-    <div className="mt-3">
-      {snippet.comments.map((comment, index) => (
-        <li key={index} className="text-sm">{comment.content}</li>
-      ))}
-      <form onSubmit={addComment} className="flex mt-3  items-center gap-2">
+    <div>
+      <ul>
+        {snippet.comments.map((comment,index) => (
+          <li key={index} className="pl-3 text-sm">{`${index+1}. ${comment.content}`}</li>
+        ))}
+      </ul>
+      <form
+        className="flex items-center justify-between mt-2"
+        onSubmit={handleComment}
+      >
         <input
-          type="text"
+          placeholder="Post comment..."
+          className="border rounded px-2 py-1 outline-0"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Add comment"
-          className="border rounded px-2 text-sm py-1"
         />
-        <button className="bg-black text-white px-4">Add</button>
+        <button
+          type="submit"
+          className="px-2 py-1 rounded bg-black cursor-pointer text-white"
+        >
+          Post
+        </button>
       </form>
     </div>
   );
